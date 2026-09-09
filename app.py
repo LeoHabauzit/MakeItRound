@@ -8,17 +8,33 @@ from help_functions import *
 # BASE JOUEURS
 # =========================================================
 
-ALL_PLAYERS = {
-    "Alice": 1,
-    "Bob": 2,
-    "Charlie": 3,
-    "David": 1,
-    "Emma": 2,
-    "Fred": 3,
-    "George": 2,
-    "Hugo": 1,
-}
 
+ALL_PLAYERS = {
+    "Rémi": 1,
+    "Aimeric": 1,
+    "Rudy": 1,
+    "Titou": 1,
+    "Léo": 2,
+    "Hugo": 2,
+    "Thomas": 2,
+    "Vincent": 2,
+    "Emma": 3,
+    "Anna": 3,
+    "Nils": 3,
+    "Guillaume": 3,
+    "Pro 1": 1,
+    "Pro 2": 1,
+    "Pro 3": 1,
+    "Pro 4": 1,
+    "Inter 1": 2,
+    "Inter 2": 2,
+    "Inter 3": 2,
+    "Inter 4": 2,
+    "Debut 1": 3,
+    "Debut 2": 3,
+    "Debut 3": 3,
+    "Debut 4": 3,
+}
 
 # =========================================================
 # UI
@@ -45,9 +61,12 @@ selected_names = st.multiselect(
 # transformation en format moteur
 players = [(name, ALL_PLAYERS[name], 0) for name in selected_names]
 
+# players = list(ALL_PLAYERS.items())
+random.shuffle(players)
 
-st.write("### Joueurs sélectionnés")
-st.write(players)
+# ALL_PLAYERS = dict(players)
+# st.write("### Joueurs sélectionnés")
+# st.write(players)
 
 
 # =========================================================
@@ -66,7 +85,7 @@ if st.button("🚀 Générer les matchs"):
 
     # appel moteur
     matches, rest = build_matches(L1, L2, L3, round_)
-
+    print(matches)
     # =====================================================
     # AFFICHAGE MATCHS
     # =====================================================
@@ -77,6 +96,7 @@ if st.button("🚀 Générer les matchs"):
         st.info("Aucun match généré")
     else:
         for i, m in enumerate(matches, 1):
+            print(i)
             st.markdown(f"### Match {i}")
 
             col1, col2 = st.columns(2)

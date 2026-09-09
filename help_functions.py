@@ -23,6 +23,7 @@ def generate_players(l1, l2, l3):
 
 
 def fill_matches(A, matches, rest):
+    "Optimise les matchs de même niveau"
     i = 0
     while i + 3 < len(A):
         p1, p2, p3, p4 = A[i : i + 4]
@@ -32,6 +33,12 @@ def fill_matches(A, matches, rest):
         i += 4
 
     rest += A[i:]
+    print(rest)
+    # if A[i:] == []:
+    #     rest = None
+    # else:
+    #     rest.append(A[i:])
+    # print("après", rest)
     return matches, rest
 
 
@@ -45,31 +52,35 @@ def build_matches(L1, L2, L3, round):
     rest = []
 
     if round == 1:
+        "Round Intermédiaire ensembles"
         A = L2
         B = L1
         C = L3
 
     elif round == 2:
+        "Round Débutants ensembles"
         A = L3
         B = L1
         C = L2
 
     elif round == 3:
+        "Round Pro Ensembles"
         A = L1
         B = L2
         C = L3
     elif round == 4:
-        matches, rest = fill_matches(L1, matches, rest)
+        "Round minimiser le mix de niveaux"
+        for level in [L1, L2, L3]:
+            matches, rest = fill_matches(level, matches, rest)
+            # matches.append(matche_lvl)
+            # rest.append(rest_lvl)
 
-        matches, rest = fill_matches(L2, matches, rest)
-
-        matches, rest = fill_matches(L3, matches, rest)
         while len(rest) > 4:
             last_matches, last_rest = find_best_rest_match(rest)
+
             matches.append(last_matches)
             rest = last_rest
-
-        return matches, last_rest
+        return matches, rest
 
     matches, rest = fill_matches(A, matches, rest)
 
@@ -87,8 +98,10 @@ def build_matches(L1, L2, L3, round):
         j += 2
 
     rest += B[i:] + C[j:]
+    print(rest)
     last_match, last_rest = find_best_rest_match(rest)
-    # matches.append(last_match)
+    if last_match is not None:
+        matches.append(last_match)
 
     return matches, last_rest
 
@@ -146,23 +159,23 @@ def find_best_rest_match(rest):
     best_match = None
     best_score = float("inf")
     best_used = None
-
-    # toutes les combinaisons de 4 joueurs
+    print(itertools.combinations(rest, 4))
     for combo in itertools.combinations(rest, 4):
-        # toutes les façons de faire 2v2
         for teamA_idx in itertools.combinations(range(4), 2):
+            print(teamA_idx)
             teamA = [combo[i] for i in teamA_idx]
             teamB = [combo[i] for i in range(4) if i not in teamA_idx]
 
             score = score_match(teamA, teamB)
-
+            # print(score)
             if score < best_score:
+                print("aaa")
                 best_score = score
                 best_match = {"teamA": teamA, "teamB": teamB}
 
                 best_used = set(combo)
 
-    # recalcul du reste global
     new_rest = [p for p in rest if p not in best_used]
+    print("best match : ", best_match)
 
     return best_match, new_rest
