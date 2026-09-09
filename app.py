@@ -40,7 +40,7 @@ ALL_PLAYERS = {
 # UI
 # =========================================================
 
-st.title("🏐 Roundnet Match Generator")
+st.title("Make it round")
 
 st.sidebar.header("Configuration")
 
