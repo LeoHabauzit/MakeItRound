@@ -9,36 +9,86 @@ from help_functions import *
 # =========================================================
 
 
+# ALL_PLAYERS = {
+#     "Rémi": 1,
+#     "Aimeric": 1,
+#     "Rudy": 1,
+#     "Titou": 1,
+#     "Léo": 2,
+#     "Hugo": 2,
+#     "Thomas": 2,
+#     "Vincent": 2,
+#     "Emma": 3,
+#     "Anna": 3,
+#     "Nils": 3,
+#     "Guillaume": 3,
+#     "Pro 1": 1,
+#     "Pro 2": 1,
+#     "Pro 3": 1,
+#     "Pro 4": 1,
+#     "Inter 1": 2,
+#     "Inter 2": 2,
+#     "Inter 3": 2,
+#     "Inter 4": 2,
+#     "Debut 1": 3,
+#     "Debut 2": 3,
+#     "Debut 3": 3,
+#     "Debut 4": 3,
+# }
 ALL_PLAYERS = {
-    "Rémi": 1,
-    "Aimeric": 1,
-    "Rudy": 1,
-    "Titou": 1,
-    "Léo": 2,
-    "Hugo": 2,
-    "Thomas": 2,
-    "Vincent": 2,
-    "Emma": 3,
-    "Anna": 3,
-    "Nils": 3,
-    "Guillaume": 3,
-    "Pro 1": 1,
-    "Pro 2": 1,
-    "Pro 3": 1,
-    "Pro 4": 1,
-    "Inter 1": 2,
-    "Inter 2": 2,
-    "Inter 3": 2,
-    "Inter 4": 2,
-    "Debut 1": 3,
-    "Debut 2": 3,
-    "Debut 3": 3,
-    "Debut 4": 3,
+    "pro 1": {
+        "level": 1,
+        "sex": "w",
+    },
+    "pro 2": {
+        "level": 1,
+        "sex": "m",
+    },
+    "pro 3": {
+        "level": 1,
+        "sex": "m",
+    },
+    # "pro 4": {
+    #     "level": 1,
+    #     "sex": "m",
+    # },
+    "inter 1": {
+        "level": 2,
+        "sex": "m",
+    },
+    "inter 2": {
+        "level": 2,
+        "sex": "m",
+    },
+    "inter 3": {
+        "level": 2,
+        "sex": "m",
+    },
+    # "inter 4": {
+    #     "level": 2,
+    #     "sex": "m",
+    # },
+    "debut 1": {
+        "level": 3,
+        "sex": "m",
+    },
+    "debut 2 f": {
+        "level": 3,
+        "sex": "w",
+    },
+    "debut 3 f": {
+        "level": 3,
+        "sex": "w",
+    },
+    # "debut 4": {
+    #     "level": 3,
+    #     "sex": "m",
+    # },
 }
 
-selected_names = st.multiselect(
-    "Sélectionne les joueurs présents à l'entraînement", list(ALL_PLAYERS.keys())
-)
+# selected_names = st.multiselect(
+#     "Sélectionne les joueurs présents à l'entraînement", list(ALL_PLAYERS.keys())
+# )
 
 # =========================================================
 # UI
@@ -49,6 +99,7 @@ st.title("Make it round")
 st.sidebar.header("Configuration")
 
 round_ = st.sidebar.selectbox("Choisir le round", [1, 2, 3, 4])
+women_round = st.sidebar.selectbox("Mettre round féminin", ["oui", "non"])
 
 
 # =========================================================
@@ -63,7 +114,10 @@ selected_names = st.multiselect(
 
 
 # transformation en format moteur
-players = [(name, ALL_PLAYERS[name], 0) for name in selected_names]
+players = [
+    (name.title(), player["level"], player["sex"])
+    for name, player in ALL_PLAYERS.items()
+]
 
 # players = list(ALL_PLAYERS.items())
 random.shuffle(players)
@@ -83,12 +137,16 @@ if st.button("🚀 Générer les matchs"):
         st.stop()
 
     # split par niveau
-    L1 = [p for p in players if p[1] == 1]
-    L2 = [p for p in players if p[1] == 2]
-    L3 = [p for p in players if p[1] == 3]
-
+    L1, L2, L3 = get_level_list_players(players)
+    matches = []
+    rest = []
+    if women_round == "oui":
+        women_players = [p for p in players if p[2] == "w"]
+        players = [p for p in players if p[2] == "m"]
+        L1_w, L2_w, L3_w = get_level_list_players(women_players)
+        matches, rest = build_matches(L1_w, L2_w, L3_w, round, matches, rest)
     # appel moteur
-    matches, rest = build_matches(L1, L2, L3, round_)
+    matches, rest = build_matches(L1, L2, L3, round_, matches, rest)
     print(matches)
     # =====================================================
     # AFFICHAGE MATCHS
@@ -129,26 +187,26 @@ if st.button("🚀 Générer les matchs"):
     else:
         st.success("Aucun joueur en pause 🎉")
 
-    # =====================================================
-    # MATCH DES RESTES
-    # =====================================================
+    # # =====================================================
+    # # MATCH DES RESTES
+    # # =====================================================
 
-    st.subheader("⚡ Match des restes (optimisé)")
+    # st.subheader("⚡ Match des restes (optimisé)")
 
-    if len(rest) >= 4:
-        best_match, new_rest = find_best_rest_match(rest)
+    # if len(rest) >= 4:
+    #     best_match, new_rest = find_best_rest_match(rest)
 
-        if best_match:
-            st.markdown("### Team A")
-            for p in best_match["teamA"]:
-                st.write(f"{p[0]} (lvl {p[1]})")
+    #     if best_match:
+    #         st.markdown("### Team A")
+    #         for p in best_match["teamA"]:
+    #             st.write(f"{p[0]} (lvl {p[1]})")
 
-            st.markdown("### Team B")
-            for p in best_match["teamB"]:
-                st.write(f"{p[0]} (lvl {p[1]})")
+    #         st.markdown("### Team B")
+    #         for p in best_match["teamB"]:
+    #             st.write(f"{p[0]} (lvl {p[1]})")
 
-            st.write("### Restants finaux")
-            st.write(new_rest)
+    #         st.write("### Restants finaux")
+    #         st.write(new_rest)
 
-    elif rest:
-        st.info("Pas assez de joueurs pour un match des restes")
+    # elif rest:
+    #     st.info("Pas assez de joueurs pour un match des restes")
