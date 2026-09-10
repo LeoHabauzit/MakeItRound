@@ -1,10 +1,19 @@
 from help_functions import *
 import streamlit as st
+import pandas as pd
 
 # ⚠️ toutes tes fonctions sont importées ailleurs
 # from engine import build_matches, find_best_rest_match
 
+df = pd.read_excel("alpes_roundnet.xlsx")
 
+ALL_PLAYERS = {
+    row["Nom"]: {
+        "level": row["level"],
+        "sex": row["sex"],
+    }
+    for _, row in df.iterrows()
+}
 # =========================================================
 # BASE JOUEURS
 # =========================================================
@@ -36,56 +45,56 @@ import streamlit as st
 #     "Debut 3": 3,
 #     "Debut 4": 3,
 # }
-ALL_PLAYERS = {
-    "pro 1 F": {
-        "level": 1,
-        "sex": "w",
-    },
-    "pro 2": {
-        "level": 1,
-        "sex": "m",
-    },
-    "pro 3": {
-        "level": 1,
-        "sex": "m",
-    },
-    "pro 4 F": {
-        "level": 1,
-        "sex": "w",
-    },
-    "inter 1": {
-        "level": 2,
-        "sex": "m",
-    },
-    "inter 2": {
-        "level": 2,
-        "sex": "m",
-    },
-    "inter 3": {
-        "level": 2,
-        "sex": "m",
-    },
-    # "inter 4": {
-    #     "level": 2,
-    #     "sex": "m",
-    # },
-    "debut 1": {
-        "level": 3,
-        "sex": "m",
-    },
-    "debut 2 f": {
-        "level": 3,
-        "sex": "w",
-    },
-    "debut 3 f": {
-        "level": 3,
-        "sex": "w",
-    },
-    # "debut 4": {
-    #     "level": 3,
-    #     "sex": "m",
-    # },
-}
+# ALL_PLAYERS = {
+#     "pro 1 F": {
+#         "level": 1,
+#         "sex": "w",
+#     },
+#     "pro 2": {
+#         "level": 1,
+#         "sex": "m",
+#     },
+#     "pro 3": {
+#         "level": 1,
+#         "sex": "m",
+#     },
+#     "pro 4 F": {
+#         "level": 1,
+#         "sex": "w",
+#     },
+#     "inter 1": {
+#         "level": 2,
+#         "sex": "m",
+#     },
+#     "inter 2": {
+#         "level": 2,
+#         "sex": "m",
+#     },
+#     "inter 3": {
+#         "level": 2,
+#         "sex": "m",
+#     },
+#     # "inter 4": {
+#     #     "level": 2,
+#     #     "sex": "m",
+#     # },
+#     "debut 1": {
+#         "level": 3,
+#         "sex": "m",
+#     },
+#     "debut 2 f": {
+#         "level": 3,
+#         "sex": "w",
+#     },
+#     "debut 3 f": {
+#         "level": 3,
+#         "sex": "w",
+#     },
+#     # "debut 4": {
+#     #     "level": 3,
+#     #     "sex": "m",
+#     # },
+# }
 
 # selected_names = st.multiselect(
 #     "Sélectionne les joueurs présents à l'entraînement", list(ALL_PLAYERS.keys())
