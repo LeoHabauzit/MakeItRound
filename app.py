@@ -107,7 +107,10 @@ ALL_PLAYERS = {
 st.title("Make it round")
 
 st.sidebar.header("Configuration")
-
+st.sidebar.subheader("1 -> Mix pro/inter")
+st.sidebar.subheader("2 -> Mix pro/debutants")
+st.sidebar.subheader("3 -> Mix inter/debutants")
+st.sidebar.subheader("4 -> Mix au minimum")
 round_ = st.sidebar.selectbox("Choisir le round", [1, 2, 3, 4])
 women_round = st.sidebar.selectbox("Mettre round féminin", ["oui", "non"])
 
