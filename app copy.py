@@ -98,7 +98,9 @@ st.title("Make it round")
 
 st.sidebar.header("Configuration")
 
-round_ = st.sidebar.selectbox("Choisir le round", [1, 2, 3, 4])
+round_ = st.sidebar.selectbox(
+    "Choisir le round", ["Mix pro/deb", "Mix pro/int", "Mix int/deb", "No Mix"]
+)
 women_round = st.sidebar.selectbox("Mettre round féminin", ["oui", "non"])
 
 
@@ -106,7 +108,7 @@ women_round = st.sidebar.selectbox("Mettre round féminin", ["oui", "non"])
 # SELECTION JOUEURS
 # =========================================================
 
-# st.subheader("👥 Joueurs présents")
+st.subheader("👥 Joueurs présents")
 
 selected_names = st.multiselect(
     "Sélectionne les joueurs présents à l'entraînement", list(ALL_PLAYERS.keys())
@@ -156,7 +158,7 @@ if st.button("🚀 Générer les matchs"):
     # AFFICHAGE MATCHS
     # =====================================================
 
-    # st.subheader("Matchs")
+    st.subheader("📊 Matchs générés")
 
     if not matches:
         st.info("Aucun match généré")

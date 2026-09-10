@@ -1,4 +1,5 @@
 import random
+import itertools
 
 
 def generate_players(l1, l2, l3):
@@ -46,6 +47,7 @@ def get_level_list_players(players):
     L1 = [p for p in players if p[1] == 1]
     L2 = [p for p in players if p[1] == 2]
     L3 = [p for p in players if p[1] == 3]
+
     return L1, L2, L3
 
 
@@ -131,18 +133,12 @@ def print_matches_and_rest(matches, rest):
     print("\n====================================\n")
 
 
-import itertools
-
-
 def score_match(teamA, teamB):
     """
     score = différence de niveau entre les deux équipes
     plus c'est proche de 0, mieux c'est
     """
     return abs(sum(p[1] for p in teamA) - sum(p[1] for p in teamB))
-
-
-import itertools
 
 
 def find_best_rest_match(rest):
