@@ -34,9 +34,9 @@ random.shuffle(players)
 L1 = [p for p in players if p[1] == 1]
 L2 = [p for p in players if p[1] == 2]
 L3 = [p for p in players if p[1] == 3]
-
+print(L1)
 # appel moteur
-matches, rest = build_matches(L1, L2, L3, 4)
-print(matches, rest)
-print_matches_and_rest(matches, rest)
+# matches, rest = build_matches(L1, L2, L3, 4)
+# print(matches, rest)
+# print_matches_and_rest(matches, rest)
 # print(L1, L2, L3)

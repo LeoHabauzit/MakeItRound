@@ -42,15 +42,15 @@ def fill_matches(A, matches, rest):
     return matches, rest
 
 
-def get_level_i_players(players, i):
-    return [p for p in players if p[1] == i]
+def get_level_list_players(players):
+    L1 = [p for p in players if p[1] == 1]
+    L2 = [p for p in players if p[1] == 2]
+    L3 = [p for p in players if p[1] == 3]
+    return L1, L2, L3
 
 
 #     return matches, rest
-def build_matches(L1, L2, L3, round):
-    matches = []
-    rest = []
-
+def build_matches(L1, L2, L3, round, matches=[], rest=[]):
     if round == 1:
         "Round Intermédiaire ensembles"
         A = L2
@@ -179,3 +179,9 @@ def find_best_rest_match(rest):
     print("best match : ", best_match)
 
     return best_match, new_rest
+
+
+# def build_women_matches(players, round):
+
+
+# def get_women_players(players):
