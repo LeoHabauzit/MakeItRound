@@ -36,6 +36,10 @@ ALL_PLAYERS = {
     "Debut 4": 3,
 }
 
+selected_names = st.multiselect(
+    "Sélectionne les joueurs présents à l'entraînement", list(ALL_PLAYERS.keys())
+)
+
 # =========================================================
 # UI
 # =========================================================

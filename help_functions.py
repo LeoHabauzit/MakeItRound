@@ -159,7 +159,7 @@ def find_best_rest_match(rest):
     best_match = None
     best_score = float("inf")
     best_used = None
-    print(itertools.combinations(rest, 4))
+    random.shuffle(rest)
     for combo in itertools.combinations(rest, 4):
         for teamA_idx in itertools.combinations(range(4), 2):
             print(teamA_idx)
