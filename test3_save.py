@@ -13,17 +13,17 @@ ALL_PLAYERS = {
         "level": 1,
         "sex": "m",
     },
-    "pro 4": {
-        "level": 1,
-        "sex": "m",
-    },
+    # "pro 4": {
+    #     "level": 1,
+    #     "sex": "m",
+    # },
     "inter 1": {
         "level": 2,
         "sex": "m",
     },
     "inter 2": {
         "level": 2,
-        "sex": "w",
+        "sex": "m",
     },
     "inter 3": {
         "level": 2,
@@ -35,13 +35,13 @@ ALL_PLAYERS = {
     # },
     "debut 1": {
         "level": 3,
-        "sex": "w",
+        "sex": "m",
     },
-    "debut 2": {
+    "debut 2 f": {
         "level": 3,
         "sex": "w",
     },
-    "debut 3": {
+    "debut 3 f": {
         "level": 3,
         "sex": "w",
     },
