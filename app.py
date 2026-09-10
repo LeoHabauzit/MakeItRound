@@ -107,13 +107,12 @@ ALL_PLAYERS = {
 st.title("Make it round")
 
 st.sidebar.header("Configuration")
-st.sidebar.subheader("1 -> Mix pro/inter")
-st.sidebar.subheader("2 -> Mix pro/debutants")
-st.sidebar.subheader("3 -> Mix inter/debutants")
-st.sidebar.subheader("4 -> Mix au minimum")
 round_ = st.sidebar.selectbox("Choisir le round", [1, 2, 3, 4])
-women_round = st.sidebar.selectbox("Mettre round féminin", ["oui", "non"])
-
+women_round = st.sidebar.selectbox("Mettre round féminin", ["non", "oui"])
+st.sidebar.info("1 -> Mix pro/inter")
+st.sidebar.info("2 -> Mix pro/debutants")
+st.sidebar.info("3 -> Mix inter/debutants")
+st.sidebar.info("4 -> Mix au minimum")
 
 # =========================================================
 # SELECTION JOUEURS
@@ -195,18 +194,32 @@ if st.button("🚀 Générer les matchs"):
     # =====================================================
     # RESTE
     # =====================================================
+    if len(rest) >= 4:
+        best_match, rest = find_best_rest_match(rest)
+        if not best_match:
+            st.info("Aucun match généré")
+        else:
+            st.markdown(f"### Match bonus")
+            col1, col2 = st.columns(2)
+            with col1:
+                st.markdown("### 🟦 Team A")
+                for p in best_match["teamA"]:
+                    st.write(f"{p[0]} (lvl {p[1]})")
+            with col2:
+                st.markdown("### 🟥 Team B")
+                for p in best_match["teamB"]:
+                    st.write(f"{p[0]} (lvl {p[1]})")
 
     st.subheader("🟡 Joueurs en pause")
-
     if rest:
         for p in rest:
             st.write(f"{p[0]} (lvl {p[1]})")
     else:
         st.success("Aucun joueur en pause 🎉")
 
-    # # =====================================================
-    # # MATCH DES RESTES
-    # # =====================================================
+    # =====================================================
+    # MATCH DES RESTES
+    # =====================================================
 
     # st.subheader("⚡ Match des restes (optimisé)")
 
