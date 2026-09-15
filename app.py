@@ -112,6 +112,13 @@ if st.button("🚀 Générer les matchs"):
 
     st.subheader("🟡 Joueurs en pause")
     if rest:
+        # print(len(rest))
+        # st.write(
+        #                 "🟡 Bye :",
+        #                 "/".join(m["teamA"][i][0] for i in range(len(rest))),
+        #                 "vs 🟦 : ",
+        #                 "/".join(m["teamB"][i][0] for i in [0, 1]),
+        # )
         for p in rest:
             st.write(f"{p[0]} (lvl {p[1]})")
     else:
