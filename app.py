@@ -70,22 +70,29 @@ if st.button("🚀 Générer les matchs"):
         st.info("Aucun match généré")
     else:
         for i, m in enumerate(matches, 1):
-            print(i)
-            st.markdown(f"### Match {i}")
+            # print(i)
+            # st.markdown(f"### Match {i}")
+            st.write(
+                f"Match {i} :",
+                "🟥",
+                "/".join(m["teamA"][i][0] for i in [0, 1]),
+                "vs 🟦 : ",
+                "/".join(m["teamB"][i][0] for i in [0, 1]),
+            )
+            # col1, col2 = st.columns(2)
 
-            col1, col2 = st.columns(2)
+            # with col1:
+            #     st.markdown("#### 🟦 Team A")
+            #     for p in m["teamA"]:
+            #         print(p)
+            #         st.write(f"{p[0]} (lvl {p[1]})")
 
-            with col1:
-                st.markdown("#### 🟦 Team A")
-                for p in m["teamA"]:
-                    st.write(f"{p[0]} (lvl {p[1]})")
+            # with col2:
+            #     st.markdown("#### 🟥 Team B")
+            #     for p in m["teamB"]:
+            #         st.write(f"{p[0]} (lvl {p[1]})")
 
-            with col2:
-                st.markdown("#### 🟥 Team B")
-                for p in m["teamB"]:
-                    st.write(f"{p[0]} (lvl {p[1]})")
-
-            st.divider()
+            # st.divider()
 
     # =====================================================
     # RESTE
@@ -95,16 +102,13 @@ if st.button("🚀 Générer les matchs"):
         if not best_match:
             st.info("Aucun match généré")
         else:
-            st.markdown(f"### Match bonus")
-            col1, col2 = st.columns(2)
-            with col1:
-                st.markdown("### 🟦 Team A")
-                for p in best_match["teamA"]:
-                    st.write(f"{p[0]} (lvl {p[1]})")
-            with col2:
-                st.markdown("### 🟥 Team B")
-                for p in best_match["teamB"]:
-                    st.write(f"{p[0]} (lvl {p[1]})")
+            st.write(
+                f"Match {i} :",
+                "🟥",
+                "/".join(m["teamA"][i][0] for i in [0, 1]),
+                "vs 🟦 : ",
+                "/".join(m["teamB"][i][0] for i in [0, 1]),
+            )
 
     st.subheader("🟡 Joueurs en pause")
     if rest:
