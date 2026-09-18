@@ -16,10 +16,10 @@ ALL_PLAYERS = {
 # Initialisation des joueurs temporaires
 if "temporary_players" not in st.session_state:
     st.session_state.temporary_players = {}
-# if "paused_players" not in st.session_state:
-#     st.session_state.paused_players = []
+if "paused_players" not in st.session_state:
+    st.session_state.paused_players = []
 
-# paused_players = st.session_state.paused_players
+paused_players = st.session_state.paused_players
 
 # Ajouter les joueurs temporaires à la liste générale
 ALL_PLAYERS.update(st.session_state.temporary_players)
@@ -67,7 +67,7 @@ add_temporary_player(ALL_PLAYERS)
 
 if st.button("🚀 Générer les matchs"):
     n_round = 0
-    paused_players = []
+    # paused_players = []
     for round_ in rounds:
         n_round += 1
         n_match = 0
