@@ -16,8 +16,8 @@ ALL_PLAYERS = {
 st.title("Make it round")
 
 st.sidebar.header("Configuration")
-round_ = st.sidebar.selectbox("Choisir le round", [1, 2, 3, 4])
-women_round = st.sidebar.selectbox("Mettre round féminin", ["oui", "non"])
+# round_ = st.sidebar.selectbox("Choisir le round", [1, 2, 3, 4])
+# women_round = st.sidebar.selectbox("Mettre round féminin", ["oui", "non"])
 st.sidebar.info("1 -> Mix pro/inter")
 st.sidebar.info("2 -> Mix pro/debutants")
 st.sidebar.info("3 -> Mix inter/debutants")
@@ -38,88 +38,75 @@ players = [
 ]
 random.shuffle(players)
 
-
+rounds = [1, 2, 3, 4]
 # =========================================================
 # GENERATION MATCHS
 # =========================================================
 
 if st.button("🚀 Générer les matchs"):
-    if len(players) < 4:
-        st.warning("Il faut au moins 4 joueurs pour générer un match")
-        st.stop()
+    for round_ in rounds:
+        random.shuffle(players)
+        matches = []
+        rest = []
+        st.subheader(f"Round {round_}")
 
-    matches = []
-    rest = []
-    if women_round == "oui":
-        women_players = [p for p in players if p[2] == "w"]
-        players = [p for p in players if p[2] == "m"]
-        L1_w, L2_w, L3_w = get_level_list_players(women_players)
-        print("levels : ", L1_w, L2_w, L3_w)
-        matches, rest = build_matches(L1_w, L2_w, L3_w, round_, matches, rest)
-    # appel moteur
-    L1, L2, L3 = get_level_list_players(players)
-    matches, rest = build_matches(L1, L2, L3, round_, matches, rest)
-    print(matches)
-    # =====================================================
-    # AFFICHAGE MATCHS
-    # =====================================================
+        if len(players) < 4:
+            st.warning("Il faut au moins 4 joueurs pour générer un match")
+            st.stop()
 
-    # st.subheader("Matchs")
+        # if women_round == "oui":
+        #     women_players = [p for p in players if p[2] == "w"]
+        #     players = [p for p in players if p[2] == "m"]
+        #     L1_w, L2_w, L3_w = get_level_list_players(women_players)
+        #     matches, rest = build_matches(L1_w, L2_w, L3_w, round_, matches, rest)
 
-    if not matches:
-        st.info("Aucun match généré")
-    else:
-        for i, m in enumerate(matches, 1):
-            # print(i)
-            # st.markdown(f"### Match {i}")
-            st.write(
-                f"Match {i} :",
-                "🟥",
-                "/".join(m["teamA"][i][0] for i in [0, 1]),
-                "vs 🟦 : ",
-                "/".join(m["teamB"][i][0] for i in [0, 1]),
-            )
-            # col1, col2 = st.columns(2)
+        L1, L2, L3 = get_level_list_players(players)
+        matches, rest = build_matches(L1, L2, L3, round_, matches, rest)
+        # =====================================================
+        # AFFICHAGE MATCHS
+        # =====================================================
 
-            # with col1:
-            #     st.markdown("#### 🟦 Team A")
-            #     for p in m["teamA"]:
-            #         print(p)
-            #         st.write(f"{p[0]} (lvl {p[1]})")
-
-            # with col2:
-            #     st.markdown("#### 🟥 Team B")
-            #     for p in m["teamB"]:
-            #         st.write(f"{p[0]} (lvl {p[1]})")
-
-            # st.divider()
-
-    # =====================================================
-    # RESTE
-    # =====================================================
-    if len(rest) >= 4:
-        best_match, rest = find_best_rest_match(rest)
-        if not best_match:
-            st.info("Aucun match généré")
+        if not matches:
+            st.info("Aucun match du round possible")
         else:
-            st.write(
-                f"Match {i} :",
-                "🟥",
-                "/".join(m["teamA"][i][0] for i in [0, 1]),
-                "vs 🟦 : ",
-                "/".join(m["teamB"][i][0] for i in [0, 1]),
-            )
+            for i, m in enumerate(matches, 1):
+                st.write(
+                    f"Match {i} :",
+                    "🟥",
+                    " / ".join(
+                        f"{m['teamA'][j][0]} (l{m['teamA'][j][1]})" for j in [0, 1]
+                    ),
+                    "vs 🟦 :",
+                    " / ".join(
+                        f"{m['teamB'][j][0]} (l{m['teamB'][j][1]})" for j in [0, 1]
+                    ),
+                )
 
-    st.subheader("🟡 Joueurs en pause")
-    if rest:
-        # print(len(rest))
-        # st.write(
-        #                 "🟡 Bye :",
-        #                 "/".join(m["teamA"][i][0] for i in range(len(rest))),
-        #                 "vs 🟦 : ",
-        #                 "/".join(m["teamB"][i][0] for i in [0, 1]),
-        # )
-        for p in rest:
-            st.write(f"{p[0]} (lvl {p[1]})")
-    else:
-        st.success("Aucun joueur en pause 🎉")
+        # =====================================================
+        # RESTE
+        # =====================================================
+
+        while len(rest) >= 4:
+            best_match, rest = find_best_rest_match(rest)
+            i += 1
+            if not best_match:
+                st.info("Aucun match généré")
+            else:
+                st.write(
+                    f"Match (r) {i} :",
+                    "🟥",
+                    " / ".join(
+                        f"{best_match['teamA'][j][0]} (l{m['teamA'][j][1]})"
+                        for j in [0, 1]
+                    ),
+                    "vs 🟦 :",
+                    " / ".join(
+                        f"{best_match['teamB'][j][0]} (l{m['teamB'][j][1]})"
+                        for j in [0, 1]
+                    ),
+                )
+        if rest:
+            st.write("🟡 Byes : ", " / ".join(f"{p[0]} (l{p[1]})" for p in rest))
+        else:
+            st.write("🟡 Pas de joueurs en pause🎉")
+        st.divider()

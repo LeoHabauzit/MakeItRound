@@ -34,7 +34,7 @@ def fill_matches(A, matches, rest):
         i += 4
 
     rest += A[i:]
-    print(rest)
+    # print(rest)
     # if A[i:] == []:
     #     rest = None
     # else:
@@ -77,11 +77,11 @@ def build_matches(L1, L2, L3, round, matches=[], rest=[]):
             # matches.append(matche_lvl)
             # rest.append(rest_lvl)
 
-        while len(rest) > 4:
-            last_matches, last_rest = find_best_rest_match(rest)
+        # while len(rest) > 4:
+        #     last_matches, last_rest = find_best_rest_match(rest)
 
-            matches.append(last_matches)
-            rest = last_rest
+        #     matches.append(last_matches)
+        #     rest = last_rest
         return matches, rest
 
     matches, rest = fill_matches(A, matches, rest)
@@ -100,12 +100,12 @@ def build_matches(L1, L2, L3, round, matches=[], rest=[]):
         j += 2
 
     rest += B[i:] + C[j:]
-    print(rest)
-    last_match, last_rest = find_best_rest_match(rest)
-    if last_match is not None:
-        matches.append(last_match)
+    # print(rest)
+    # last_match, last_rest = find_best_rest_match(rest)
+    # if last_match is not None:
+    #     matches.append(last_match)
 
-    return matches, last_rest
+    return matches, rest
 
 
 def print_matches_and_rest(matches, rest):
@@ -158,21 +158,19 @@ def find_best_rest_match(rest):
     random.shuffle(rest)
     for combo in itertools.combinations(rest, 4):
         for teamA_idx in itertools.combinations(range(4), 2):
-            print(teamA_idx)
+            # print(teamA_idx)
             teamA = [combo[i] for i in teamA_idx]
             teamB = [combo[i] for i in range(4) if i not in teamA_idx]
 
             score = score_match(teamA, teamB)
             # print(score)
             if score < best_score:
-                print("aaa")
                 best_score = score
                 best_match = {"teamA": teamA, "teamB": teamB}
 
                 best_used = set(combo)
 
     new_rest = [p for p in rest if p not in best_used]
-    print("best match : ", best_match)
 
     return best_match, new_rest
 
