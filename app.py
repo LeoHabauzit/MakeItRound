@@ -32,6 +32,10 @@ selected_names = st.multiselect(
     "Sélectionne les joueurs présents à l'entraînement", list(ALL_PLAYERS.keys())
 )
 
+number_of_players = len(selected_names)
+
+# st.metric(label="Nombre de joueurs sélectionnés", value=number_of_players)
+st.write(f"Nombre de joueurs : {number_of_players}")
 players = [
     (name.title(), ALL_PLAYERS[name]["level"], ALL_PLAYERS[name]["sex"])
     for name in selected_names
@@ -65,9 +69,9 @@ if st.button("🚀 Générer les matchs"):
         # =====================================================
         # AFFICHAGE MATCHS
         # =====================================================
-
+        n_match = 0
         if not matches:
-            st.info("Aucun match du round possible")
+            st.write("⚠️ Aucun match du round possible")
         else:
             for i, m in enumerate(matches, 1):
                 st.write(
@@ -81,6 +85,7 @@ if st.button("🚀 Générer les matchs"):
                         f"{m['teamB'][j][0]} (l{m['teamB'][j][1]})" for j in [0, 1]
                     ),
                 )
+                n_match = i
 
         # =====================================================
         # RESTE
@@ -88,20 +93,20 @@ if st.button("🚀 Générer les matchs"):
 
         while len(rest) >= 4:
             best_match, rest = find_best_rest_match(rest)
-            i += 1
+            n_match += 1
             if not best_match:
-                st.info("Aucun match généré")
+                st.write("⚠️ Aucun match généré")
             else:
                 st.write(
-                    f"Match (r) {i} :",
+                    f"Match (r) {n_match} :",
                     "🟥",
                     " / ".join(
-                        f"{best_match['teamA'][j][0]} (l{m['teamA'][j][1]})"
+                        f"{best_match['teamA'][j][0]} (l{best_match['teamA'][j][1]})"
                         for j in [0, 1]
                     ),
                     "vs 🟦 :",
                     " / ".join(
-                        f"{best_match['teamB'][j][0]} (l{m['teamB'][j][1]})"
+                        f"{best_match['teamB'][j][0]} (l{best_match['teamB'][j][1]})"
                         for j in [0, 1]
                     ),
                 )
