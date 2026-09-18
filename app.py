@@ -1,4 +1,5 @@
 from help_functions import *
+from streamlit_functions import *
 import streamlit as st
 import pandas as pd
 
@@ -12,16 +13,21 @@ ALL_PLAYERS = {
     }
     for _, row in df.iterrows()
 }
+# Initialisation des joueurs temporaires
+if "temporary_players" not in st.session_state:
+    st.session_state.temporary_players = {}
+
+
+# Ajouter les joueurs temporaires à la liste générale
+ALL_PLAYERS.update(st.session_state.temporary_players)
 
 st.title("Make it round")
 
-st.sidebar.header("Configuration")
-# round_ = st.sidebar.selectbox("Choisir le round", [1, 2, 3, 4])
-# women_round = st.sidebar.selectbox("Mettre round féminin", ["oui", "non"])
-st.sidebar.info("1 -> Mix pro/inter")
-st.sidebar.info("2 -> Mix pro/debutants")
-st.sidebar.info("3 -> Mix inter/debutants")
-st.sidebar.info("4 -> Mix au minimum")
+
+# =========================================================
+
+# =========================================================
+
 
 # =========================================================
 # SELECTION JOUEURS
@@ -42,17 +48,29 @@ players = [
 ]
 random.shuffle(players)
 
-rounds = [1, 2, 3, 4]
+# =========================================================
+# CONFIGURATION DES ROUNDS
+# =========================================================
+
+rounds = generate_rounds()
+# =========================================================
+# AJOUT TEMPORAIRE D'UN JOUEUR
+# =========================================================
+add_temporary_player(ALL_PLAYERS)
+
 # =========================================================
 # GENERATION MATCHS
 # =========================================================
 
 if st.button("🚀 Générer les matchs"):
+    n_round = 0
     for round_ in rounds:
+        n_round += 1
+        n_match = 0
         random.shuffle(players)
         matches = []
         rest = []
-        st.subheader(f"Round {round_}")
+        st.subheader(f"Round {n_round} - type {round_}")
 
         if len(players) < 4:
             st.warning("Il faut au moins 4 joueurs pour générer un match")
@@ -69,7 +87,7 @@ if st.button("🚀 Générer les matchs"):
         # =====================================================
         # AFFICHAGE MATCHS
         # =====================================================
-        n_match = 0
+
         if not matches:
             st.write("⚠️ Aucun match du round possible")
         else:
