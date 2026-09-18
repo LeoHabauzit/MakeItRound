@@ -25,12 +25,17 @@ paused_players = st.session_state.paused_players
 ALL_PLAYERS.update(st.session_state.temporary_players)
 
 st.title("Make it round")
+# =========================================================
+# CONFIGURATION DES ROUNDS
+# =========================================================
+
+rounds = generate_rounds()
 
 
 # =========================================================
-
+# AJOUT TEMPORAIRE D'UN JOUEUR
 # =========================================================
-
+add_temporary_player(ALL_PLAYERS)
 
 # =========================================================
 # SELECTION JOUEURS
@@ -38,28 +43,26 @@ st.title("Make it round")
 
 
 selected_names = st.multiselect(
-    "Sélectionne les joueurs présents à l'entraînement", list(ALL_PLAYERS.keys())
+    "Sélectionne les joueurs présents à l'entraînement",
+    list(ALL_PLAYERS.keys()),
+    key="selected_players",
 )
+
 
 number_of_players = len(selected_names)
 
 # st.metric(label="Nombre de joueurs sélectionnés", value=number_of_players)
-st.write(f"Nombre de joueurs : {number_of_players}")
+
 players = [
     (name.title(), ALL_PLAYERS[name]["level"], ALL_PLAYERS[name]["sex"])
     for name in selected_names
 ]
+L1, L2, L3 = get_level_list_players(players)
+st.write(
+    f"Nombre de joueurs : {number_of_players} ({len(L1)} pro /{len(L2)} Intermédiaire / {len(L3)} Débutants)"
+)
 random.shuffle(players)
 
-# =========================================================
-# CONFIGURATION DES ROUNDS
-# =========================================================
-
-rounds = generate_rounds()
-# =========================================================
-# AJOUT TEMPORAIRE D'UN JOUEUR
-# =========================================================
-add_temporary_player(ALL_PLAYERS)
 
 # =========================================================
 # GENERATION MATCHS

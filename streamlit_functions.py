@@ -10,9 +10,9 @@ def add_temporary_player(list_players):
     with st.sidebar.form("add_player_form", clear_on_submit=True):
         new_name = st.text_input("Nom")
 
-        new_level = st.selectbox("Niveau", ["pro", "inter", "debutant"])
+        new_level = st.selectbox("Niveau", [1, 2, 3])
 
-        new_sex = st.selectbox("Sexe", ["M", "F"])
+        new_sex = st.selectbox("H/F", ["m", "w"])
 
         add_player = st.form_submit_button("Ajouter temporairement")
 
@@ -33,6 +33,13 @@ def add_temporary_player(list_players):
 
                 # Force le script à se relancer
                 st.rerun()
+
+    st.sidebar.header("Configuration niveaux")
+    # round_ = st.sidebar.selectbox("Choisir le round", [1, 2, 3, 4])
+    # women_round = st.sidebar.selectbox("Mettre round féminin", ["oui", "non"])
+    st.sidebar.write("1 -> pro")
+    st.sidebar.write("2 -> Intermédiaire")
+    st.sidebar.write("3 -> Débutant")
 
 
 def generate_rounds():
