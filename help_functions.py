@@ -179,3 +179,38 @@ def find_best_rest_match(rest):
 
 
 # def get_women_players(players):
+
+
+def get_playing_players(players, paused_players):
+    n_bye = len(players) % 4
+
+    # Si tout le monde a déjà été en pause,
+    # on recommence un nouveau cycle
+    if len(paused_players) >= len(players):
+        paused_players = []
+
+    # Joueurs qui n'ont pas encore été en pause
+    available_for_bye = [p for p in players if p not in paused_players]
+
+    # Si on n'a pas assez de nouveaux joueurs pour remplir les byes,
+    # on complète avec des joueurs déjà passés en pause.
+    if len(available_for_bye) >= n_bye:
+        bye_players = random.sample(available_for_bye, n_bye)
+    else:
+        bye_players = available_for_bye.copy()
+
+        remaining_bye = n_bye - len(bye_players)
+
+        already_paused = [
+            p for p in players if p in paused_players and p not in bye_players
+        ]
+
+        bye_players.extend(random.sample(already_paused, remaining_bye))
+
+    # Ajouter les joueurs sélectionnés à l'historique des pauses
+    paused_players.extend(p for p in bye_players if p not in paused_players)
+
+    # Joueurs qui participent au round
+    playing_players = [p for p in players if p not in bye_players]
+    this_round_bye_players = bye_players
+    return paused_players, playing_players, this_round_bye_players
