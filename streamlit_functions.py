@@ -44,24 +44,34 @@ def add_temporary_player(list_players):
 
 def generate_rounds():
     st.sidebar.header("Configuration des rounds")
-    rounds = []
 
-    for round_number in [1, 2, 3, 4]:
-        count = st.sidebar.number_input(
+    # Nombre total de rounds
+    number_of_rounds = st.sidebar.number_input(
+        "Nombre de rounds",
+        min_value=1,
+        value=1,
+        step=1,
+        key="number_of_rounds",
+    )
+    st.sidebar.divider()
+    rounds = []
+    # Configuration de chaque round
+    for round_number in range(1, number_of_rounds + 1):
+        round_type = st.sidebar.number_input(
             f"Round {round_number}",
-            min_value=0,
-            value=0,
+            min_value=1,
+            max_value=4,
+            value=1,
             step=1,
-            key=f"round_count_{round_number}",
+            key=f"round_type_{round_number}",
         )
 
-        rounds.extend([round_number] * count)
+        rounds.append(round_type)
 
     st.sidebar.header("Configuration")
-    # round_ = st.sidebar.selectbox("Choisir le round", [1, 2, 3, 4])
-    # women_round = st.sidebar.selectbox("Mettre round féminin", ["oui", "non"])
-    st.sidebar.write("1 -> Mix pro/inter")
-    st.sidebar.write("2 -> Mix pro/debutants")
-    st.sidebar.write("3 -> Mix inter/debutants")
-    st.sidebar.write("4 -> Mix au minimum")
+    st.sidebar.write("1 → Mix pro/inter")
+    st.sidebar.write("2 → Mix pro/débutants")
+    st.sidebar.write("3 → Mix inter/débutants")
+    st.sidebar.write("4 → Mix au minimum")
+    st.sidebar.divider()
     return rounds
