@@ -1,5 +1,5 @@
-import random
 import itertools
+import random
 
 
 def generate_players(l1, l2, l3):
