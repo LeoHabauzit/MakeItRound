@@ -1,8 +1,8 @@
+import pandas as pd
+import streamlit as st
+
 from help_functions import *
 from streamlit_functions import *
-import streamlit as st
-import pandas as pd
-
 
 df = pd.read_excel("alpes_roundnet.xlsx")
 
@@ -16,9 +16,9 @@ ALL_PLAYERS = {
 # Initialisation des joueurs temporaires
 if "temporary_players" not in st.session_state:
     st.session_state.temporary_players = {}
-if "paused_players" not in st.session_state:
-    st.session_state.paused_players = []
-
+# if "paused_players" not in st.session_state:
+#     st.session_state.paused_players = []
+st.session_state.paused_players = []
 paused_players = st.session_state.paused_players
 
 # Ajouter les joueurs temporaires à la liste générale
