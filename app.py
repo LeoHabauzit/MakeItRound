@@ -84,7 +84,7 @@ if st.button("🚀 Générer les matchs"):
             st.stop()
 
         paused_players, playing_players, this_round_bye_players = get_playing_players(
-            players, paused_players
+            players, paused_players, round_
         )
         # if women_round == "oui":
         #     women_players = [p for p in players if p[2] == "w"]

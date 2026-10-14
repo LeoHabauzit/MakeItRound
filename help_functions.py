@@ -181,7 +181,7 @@ def find_best_rest_match(rest):
 # def get_women_players(players):
 
 
-def get_playing_players(players, paused_players):
+def get_playing_players(players, paused_players, round):
     n_bye = len(players) % 4
 
     # Si tout le monde a déjà été en pause,
@@ -190,12 +190,40 @@ def get_playing_players(players, paused_players):
         paused_players = []
 
     # Joueurs qui n'ont pas encore été en pause
+    # if round == 1:
+    #     available_for_bye = [
+    #         p for p in players if p not in paused_players and p[1] == 1
+    #     ]
+    # elif round == 2:
+    #     available_for_bye = [
+    #         p for p in players if p not in paused_players and p[1] == 2
+    #     ]
+
+    # elif round == 3 or round == 4:
+    #     available_for_bye = [
+    #         p for p in players if p not in paused_players and p[1] == 3
+    #     ]
+
     available_for_bye = [p for p in players if p not in paused_players]
+    opti_bye_levels = [1, 1, 2]
+    # for level in opti_bye_levels:
+
+    # print(available_for_bye)
 
     # Si on n'a pas assez de nouveaux joueurs pour remplir les byes,
     # on complète avec des joueurs déjà passés en pause.
     if len(available_for_bye) >= n_bye:
-        bye_players = random.sample(available_for_bye, n_bye)
+        bye_players = []
+        for level in opti_bye_levels:
+            bye_level_players = [
+                p for p in available_for_bye if p not in bye_players and p[1] == level
+            ]
+            if bye_level_players == []:
+                bye_level_players = [
+                    p for p in available_for_bye if p not in bye_players
+                ]
+            bye_players.extend(random.sample(bye_level_players, 1))
+        print(bye_players)
     else:
         bye_players = available_for_bye.copy()
 
@@ -214,3 +242,43 @@ def get_playing_players(players, paused_players):
     playing_players = [p for p in players if p not in bye_players]
     this_round_bye_players = bye_players
     return paused_players, playing_players, this_round_bye_players
+
+
+# def get_bye_players(round):
+#     if round ==4:
+#         if len(L3)%2!=0:
+#             return
+
+
+# def get_random_player_in_list(level_players,paused):
+
+
+def select_bye_players(players, paused_players, bye_levels):
+    bye_players = []
+
+    for level in bye_levels:
+        # Joueurs du niveau demandé, pas encore passés en pause
+        available = [
+            p
+            for p in players
+            if p.level == level and p not in paused_players and p not in bye_players
+        ]
+
+        if available:
+            selected = random.choice(available)
+        else:
+            # Si nécessaire, on reprend un joueur déjà passé en pause
+            already_paused = [
+                p
+                for p in players
+                if p.level == level and p in paused_players and p not in bye_players
+            ]
+
+            if not already_paused:
+                raise ValueError(f"Pas assez de joueurs disponibles de niveau {level}")
+
+            selected = random.choice(already_paused)
+
+        bye_players.append(selected)
+
+    return bye_players
