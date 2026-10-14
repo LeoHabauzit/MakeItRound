@@ -47,7 +47,8 @@ selected_names = st.multiselect(
     list(ALL_PLAYERS.keys()),
     key="selected_players",
 )
-
+# players = []
+print(rounds)
 
 number_of_players = len(selected_names)
 
@@ -62,6 +63,8 @@ st.write(
     f"Nombre de joueurs : {number_of_players} ({len(L1)} pro /{len(L2)} Intermédiaire / {len(L3)} Débutants)"
 )
 random.shuffle(players)
+print(rounds)
+lvl_byes = generate_lvl_bye(rounds, players)
 
 
 # =========================================================
@@ -84,7 +87,7 @@ if st.button("🚀 Générer les matchs"):
             st.stop()
 
         paused_players, playing_players, this_round_bye_players = get_playing_players(
-            players, paused_players, round_
+            players, paused_players, round_, lvl_byes
         )
         # if women_round == "oui":
         #     women_players = [p for p in players if p[2] == "w"]

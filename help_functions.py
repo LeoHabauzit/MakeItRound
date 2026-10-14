@@ -181,7 +181,7 @@ def find_best_rest_match(rest):
 # def get_women_players(players):
 
 
-def get_playing_players(players, paused_players, round):
+def get_playing_players(players, paused_players, round, lvl_byes):
     n_bye = len(players) % 4
 
     # Si tout le monde a déjà été en pause,
@@ -205,7 +205,7 @@ def get_playing_players(players, paused_players, round):
     #     ]
 
     available_for_bye = [p for p in players if p not in paused_players]
-    opti_bye_levels = [1, 1, 2]
+    opti_bye_levels = lvl_byes[round - 1]
     # for level in opti_bye_levels:
 
     # print(available_for_bye)

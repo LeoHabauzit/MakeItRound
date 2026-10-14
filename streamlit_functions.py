@@ -75,3 +75,35 @@ def generate_rounds():
     st.sidebar.write("4 → Mix au minimum")
     st.sidebar.divider()
     return rounds
+
+
+def generate_lvl_bye(rounds, players):
+    st.sidebar.header("Configuration lvl des byes")
+
+    n_bye = len(players) % 4
+    bye_rounds = []
+
+    for round_number in range(len(rounds)):
+        st.sidebar.subheader(f"Round {round_number + 1}")
+
+        round_byes = []
+
+        if n_bye > 0:
+            cols = st.sidebar.columns(n_bye)
+
+            for i in range(n_bye):
+                with cols[i]:
+                    bye_person = st.number_input(
+                        f"Bye {i + 1}",
+                        min_value=1,
+                        max_value=len(players),
+                        value=min(i + 1, len(players)),
+                        step=1,
+                        key=f"round_type_{round_number}_{i}",
+                    )
+
+                    round_byes.append(bye_person)
+
+        bye_rounds.append(round_byes)
+
+    return bye_rounds
