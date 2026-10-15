@@ -1,3 +1,5 @@
+import random
+
 import streamlit as st
 
 
@@ -33,13 +35,13 @@ def add_temporary_player(list_players):
 
                 # Force le script à se relancer
                 st.rerun()
-
-    st.sidebar.header("Configuration niveaux")
-    # round_ = st.sidebar.selectbox("Choisir le round", [1, 2, 3, 4])
-    # women_round = st.sidebar.selectbox("Mettre round féminin", ["oui", "non"])
-    st.sidebar.write("1 -> pro")
-    st.sidebar.write("2 -> Intermédiaire")
-    st.sidebar.write("3 -> Débutant")
+    with st.sidebar.expander("Signification des niveaux"):
+        # round_ = st.sidebar.selectbox("Choisir le round", [1, 2, 3, 4])
+        # women_round = st.sidebar.selectbox("Mettre round féminin", ["oui", "non"])
+        st.write("1 -> pro")
+        st.write("2 -> Intermédiaire")
+        st.write("3 -> Débutant")
+    st.sidebar.divider()
 
 
 def generate_rounds():
@@ -49,7 +51,7 @@ def generate_rounds():
     number_of_rounds = st.sidebar.number_input(
         "Nombre de rounds",
         min_value=1,
-        value=1,
+        value=4,
         step=1,
         key="number_of_rounds",
     )
@@ -61,19 +63,18 @@ def generate_rounds():
             f"Round {round_number}",
             min_value=1,
             max_value=4,
-            value=1,
+            value=round_number,
             step=1,
             key=f"round_type_{round_number}",
         )
 
         rounds.append(round_type)
+    with st.sidebar.expander("Signification des configurations"):
+        st.caption("1 → Mix pro/inter")
+        st.caption("2 → Mix pro/débutants")
+        st.caption("3 → Mix inter/débutants")
+        st.caption("4 → Mix au minimum")
 
-    st.sidebar.header("Configuration")
-    st.sidebar.write("1 → Mix pro/inter")
-    st.sidebar.write("2 → Mix pro/débutants")
-    st.sidebar.write("3 → Mix inter/débutants")
-    st.sidebar.write("4 → Mix au minimum")
-    st.sidebar.divider()
     return rounds
 
 
@@ -96,8 +97,8 @@ def generate_lvl_bye(rounds, players):
                     bye_person = st.number_input(
                         f"Bye {i + 1}",
                         min_value=1,
-                        max_value=len(players),
-                        value=min(i + 1, len(players)),
+                        max_value=3,
+                        value=random.randint(1, 3),
                         step=1,
                         key=f"round_type_{round_number}_{i}",
                     )
@@ -106,4 +107,5 @@ def generate_lvl_bye(rounds, players):
 
         bye_rounds.append(round_byes)
 
+    st.sidebar.divider()
     return bye_rounds
